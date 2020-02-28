@@ -8,25 +8,27 @@
 #include <assert.h>
 #include "ppmimage.h"
 
-Image* NouvelleImage(int w,int h)
+Image::Image() : dat(nullptr), width(0), height(0){}
+
+Image* Image::nouvelleImage(int w,int h)
 {
     Image* I = static_cast<Image *>(malloc(sizeof(Image)));
-    I->w = w;
-    I->h = h;
+    I->width = w;
+    I->height = h;
     I->dat = static_cast<Pixel *>(calloc(1, w * h * sizeof(Pixel*)));
     return I;
 }
-Image* CopieImage(Image* I)
+Image* Image::copieImage(Image* I)
 {
     Image* res;
     if (!I)
-        return NULL;
-    res = NouvelleImage(I->w,I->h);
-    memcpy(res->dat,I->dat,I->w*I->h*sizeof(Pixel));
+        return nullptr;
+    res = nouvelleImage(I->width,I->height);
+    memcpy(res->dat,I->dat,I->width*I->height*sizeof(Pixel));
     return res;
 }
 
-void DelImage(Image* I)
+void Image::delImage(Image* I)
 {
     if (I)
     {
@@ -35,26 +37,26 @@ void DelImage(Image* I)
     }
 }
 
-void SetPixel(Image* I,int i,int j,Pixel p)
+void Image::setPixel(Image* I,int i, int j, Pixel p)
 {
-    assert(I && i>=0 && i<I->w && j>=0 && j<I->h);
-    I->dat[I->w*j+i] = p;
+    assert(I && i>=0 && i<I->width && j>=0 && j<I->height);
+    I->dat[I->width*j+i] = p;
 }
 
-Pixel GetPixel(Image* I,int i,int j)
+Pixel Image::getPixel(Image* I, int i, int j)
 {
-    assert(I && i>=0 && i<I->w && j>=0 && j<I->h);
-    return I->dat[I->w*j+i];
+    assert(I && i>=0 && i<I->width && j>=0 && j<I->height);
+    return I->dat[I->width*j+i];
 }
 
-int Sauver(Image* I,const char* fichier)
+int Image::sauver(Image* I, const char* fichier)
 {
     int i;
     FILE* F = fopen(fichier,"w");
     if (!F)
         return -1;
-    fprintf(F,"P3\n%d %d\n255\n",I->w,I->h);
-    for(i=0;i<I->w*I->h;i++)
+    fprintf(F,"P3\n%d %d\n255\n",I->width,I->height);
+    for(i=0;i<I->width*I->height;i++)
         fprintf(F,"%d %d %d ",I->dat[i].r,I->dat[i].g,I->dat[i].b);
     fclose(F);
     return 0;

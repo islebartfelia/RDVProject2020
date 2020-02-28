@@ -1,25 +1,57 @@
 #include <iostream>
 #include "ppmimage.h"
 
-int main() {
-    std::cout << "Hello, World!" << std::endl;
-
-    int i,j;
-    Image* I = NouvelleImage(256,256);
-    for(i=0;i<256;i++)
-    {
-        for(j=0;j<256;j++)
-        {
-            Pixel p;
-            p.r = i;
-            p.g = j;
-            p.b = 0;
-            SetPixel(I,i,j,p);
+void line(int x0, int y0, int x1, int y1, Image &image, Pixel pixel){
+    bool steep = false;
+    if (std::abs(x0 - x1) < std::abs(y0 - y1)) {
+        std::swap(x0, y0);
+        std::swap(x1, y1);
+        steep = true;
+    }
+    if (x0 > x1) {
+        std::swap(x0, x1);
+        std::swap(y0, y1);
+    }
+    int dx = x1 - x0;
+    int dy = y1 - y0;
+    int derror2 = std::abs(dy) * 2;
+    int error2 = 0;
+    int y = y0;
+    for (int x = 0; x <= x1; x++) {
+        if (steep) {
+            Image::setPixel(&image, y, x, pixel);
+        } else {
+            Image::setPixel(&image, x, y, pixel);
+        }
+        error2 += derror2;
+        if (error2 > dx) {
+        y += (y1 > y0 ? 1 : -1);
+        error2 -= dx * 2;
         }
     }
-    //Image* I = Charger("test.ppm");
-    Sauver(I,"test.ppm");
-    DelImage(I);
+}
+
+int main() {
+
+    int width =900; int height = 900;
+
+    /* Impression de l'image dans le fichier .ppm*/
+
+    Image* I = Image::nouvelleImage(width,height);
+    for(width = 0; width < 900; width++)
+    {
+        for(height = 0; height < 900; height++)
+        {
+            Pixel p;
+            p.r = 0;
+            p.g = 0;
+            p.b = 155;
+
+            Image::setPixel(I, width, height, p);
+        }
+    }
+    //image.sauver
+    Image::sauver(I,"test.ppm");
     return 0;
 
 }
