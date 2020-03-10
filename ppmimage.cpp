@@ -51,29 +51,31 @@ Pixel Image::getPixel(Image* I, int i, int j)
     return I->dat[I->width * j + i];
 }
 
-int Image::sauver(Image* I, const char * Filename)
+int Image::sauver(Image* I, const char* Filename)
 {
-    int i; 
+    int i;
     int x;
     std::ofstream file(Filename);
     if (file)
     {
-       
-        file <<"P3"<< std::endl;
+
+        file << "P3" << std::endl;
         file << I->width << " " << I->height << std::endl;
-        file << "255"<< std::endl;
-       
-        for (i = 0; i < I->width; i++)
-            for ( x = 0; x < I->height; x++)
+        file << "255" << std::endl;
+
+        for (i = 0; i < I->width; i++) {
+            for (x = 0; x < I->height; x++) {
                 file << i % 256 << "  ";
                 file << x % 256 << " ";
                 file << (i * x) % 256 << " ";
-               
+            }
+        }
+
     }
     else {
         std::cout << "File could not be created " << std::endl;
     }
-    
+
 
     return 0;
 }
