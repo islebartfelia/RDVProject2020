@@ -9,16 +9,17 @@ typedef struct Pixel {
     unsigned char r, g, b;
 }Pixel;
 
-class Image{
+#include <string> 
+class Image {
 protected:
     int width, height;
     Pixel* dat;
 public:
-    enum Format{
+    enum Format {
         GRAYSCALE = 1, RGB = 3, RGBA = 4
     };
     Image();
-    static int sauver(Image*, const char* fichire);
+    static int sauver(Image*,const char*Filename);
     static Image* nouvelleImage(int width, int height);
     Image* copieImage(Image*);
     static void setPixel(Image*, int i, int j, Pixel p);
@@ -29,4 +30,4 @@ public:
 
 
 
-#endif //PROJET_PPMIMAGE_H
+#endif //PROJET_PPMIMAGE_H#pragma once
