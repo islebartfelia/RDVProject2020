@@ -1,5 +1,9 @@
 #include <iostream>
 #include <cstdlib>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <stdlib.h>
 #include "ppmimage.h"
 
 void line(int x0, int y0, int x1, int y1, Image& image, Pixel pixel) {
@@ -33,6 +37,39 @@ void line(int x0, int y0, int x1, int y1, Image& image, Pixel pixel) {
     }
 }
 
+std::vector< std::vector<float> > read(std::string Filename, std::string w) {
+
+    std::ifstream file(Filename.c_str());
+    std::vector< std::vector<float> > coord;
+    std::vector<float> p;
+    std::string line;
+
+
+    if (file) {
+
+        while (file >> line) {
+
+            while (line == w) {
+
+                file >> line;
+                p.push_back(atof(line.c_str()));
+                file >> line;
+                p.push_back(atof(line.c_str()));
+                file >> line;
+                file >> line;
+                coord.push_back(p);
+
+            }
+            std::cout << "okk" << std::endl;
+        }
+
+    }
+    else {
+        std::cout << "File not found " << std::endl;
+    }
+    return coord;
+}
+
 int main() {
 
     int width = 800; int height = 800;
@@ -40,20 +77,10 @@ int main() {
     /* Impression de l'image dans le fichier .ppm*/
 
     Image* I = Image::nouvelleImage(width, height);
-    for (width = 0; width < 800; width++)
-    {
-        for (height = 0; height < 800; height++)
-        {
-            Pixel p;
-            p.r = 0;
-            p.g = 0;
-            p.b = 155;
 
-            Image::setPixel(I, width, height, p);
-        }
-    }
     //image.sauver
     Image::sauver(I, "test.PPM");
+    std::vector< std::vector<float> > coord = read("diablo3_pose.obj", "v");
     return 0;
 
 }

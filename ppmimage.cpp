@@ -6,9 +6,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#include "ppmimage.h"
 #include <fstream>
 #include <iostream>
+#include "ppmimage.h"
+
 
 Image::Image() : dat(nullptr), width(0), height(0) {}
 
