@@ -13,7 +13,7 @@ typedef struct Pixel {
 class Image {
 protected:
     int width, height;
-    Pixel* dat;
+    Pixel dat[800][800];
 public:
     enum Format {
         GRAYSCALE = 1, RGB = 3, RGBA = 4

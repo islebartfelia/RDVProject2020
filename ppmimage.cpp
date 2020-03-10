@@ -8,17 +8,23 @@
 #include <assert.h>
 #include <fstream>
 #include <iostream>
+#include <cstdlib>
+#include <vector>
+
+
 #include "ppmimage.h"
 
+Pixel P;
 
-Image::Image() : dat(nullptr), width(0), height(0) {}
+Image::Image() :  width(0), height(0) {}
 
 Image* Image::nouvelleImage(int w, int h)
 {
     Image* I = static_cast<Image*>(malloc(sizeof(Image)));
     I->width = w;
-    I->height = h;
-    I->dat = static_cast<Pixel*>(calloc(1, w * h * sizeof(Pixel*)));
+    I->height = h; 
+
+   
     return I;
 }
 Image* Image::copieImage(Image* I)
@@ -43,40 +49,43 @@ void Image::delImage(Image* I)
 void Image::setPixel(Image* I, int i, int j, Pixel p)
 {
     assert(I && i >= 0 && i < I->width && j >= 0 && j < I->height);
-    I->dat[I->width * j + i] = p;
+    I->dat[i][j] = p;
+  
 }
 
 Pixel Image::getPixel(Image* I, int i, int j)
 {
     assert(I && i >= 0 && i < I->width && j >= 0 && j < I->height);
-    return I->dat[I->width * j + i];
+    return I->dat[i][j];
 }
 
-int Image::sauver(Image* I, const char* Filename)
+int Image::sauver(Image* I, const char * Filename)
 {
-    int i;
+    int i; 
     int x;
     std::ofstream file(Filename);
     if (file)
     {
-
-        file << "P3" << std::endl;
+       
+        file <<"P3"<< std::endl;
         file << I->width << " " << I->height << std::endl;
-        file << "255" << std::endl;
-
-        for (i = 0; i < I->width; i++) {
+        file << "255"<< std::endl;
+       
+        for (i = 0; i < I->width ; i++) {
             for (x = 0; x < I->height; x++) {
-                file << i % 256 << "  ";
-                file << x % 256 << " ";
-                file << (i * x) % 256 << " ";
+                Pixel p = I->getPixel(I, i, x);
+                file << p.r %256 << "  ";
+                file << p.g %256 << " ";
+                file << p.b %256 << " ";
+
             }
         }
-
+               
     }
     else {
         std::cout << "File could not be created " << std::endl;
     }
-
+    
 
     return 0;
 }
