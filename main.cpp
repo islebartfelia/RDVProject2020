@@ -42,14 +42,17 @@ std::vector< std::vector<float> > read(std::string Filename, std::string w) {
     return coord;
 }
 
-void line(int x0, int y0, int x1, int y1, Image * image, Pixel pixel) {
+
+void line(int x0, int y0, int x1, int y1, Image * image, Pixel pixel) { //with Bresenham methode
     bool steep = false;
     if (std::abs(x0 - x1) < std::abs(y0 - y1)) {
+        std::cout << "here 1 " << std::endl;
         std::swap(x0, y0);
         std::swap(x1, y1);
         steep = true;
     }
     if (x0 > x1) {
+        std::cout << "here 2 " << std::endl;
         std::swap(x0, x1);
         std::swap(y0, y1);
     }
@@ -58,7 +61,8 @@ void line(int x0, int y0, int x1, int y1, Image * image, Pixel pixel) {
     int derror2 = std::abs(dy) * 2;
     int error2 = 0;
     int y = y0;
-    for (int x = 0; x <= x1; x++) {
+    for (int x = x0; x <= x1; x++) {
+         
         if (steep) {
             Image::setPixel(image, y, x, pixel);
         }
@@ -70,7 +74,11 @@ void line(int x0, int y0, int x1, int y1, Image * image, Pixel pixel) {
             y += (y1 > y0 ? 1 : -1);
             error2 -= dx * 2;
         }
+       
     }
+
+   
+
 }
 
 void triangle(std::vector<float> p, std::vector<float> p1, std::vector<float> p2 , Image* image, Pixel pixel)
@@ -109,18 +117,19 @@ int main() {
     std::vector<float> p;
     std::vector<float> p1;
     std::vector<float> p2;
-    p.push_back(10);
-    p.push_back(50);
-    p1.push_back(40);
-    p1.push_back(20);
-    p2.push_back(30);
-    p2.push_back(12);      
+    p.push_back(100);
+    p.push_back(500);
+    p1.push_back(100);
+    p1.push_back(200);
+    p2.push_back(300);
+    p2.push_back(120);      
             Pixel pi;
             pi.r = 0;
-            pi.g = 0;
-            pi.b = 155;
-         triangle(p, p1, p2,I, pi);
-           
+            pi.g = 200;
+            pi.b = 0;
+    triangle(p, p1, p2,I, pi);
+    //image.sauver
+    Image::sauver(I, "test.PPM");
     
         
     
