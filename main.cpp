@@ -5,7 +5,9 @@
 #include <string>
 #include <stdlib.h>
 #include "ppmimage.h"
-
+#include <time.h>
+#include <random>
+#include <ctime>
 
 
 /*************************LINE *****************************/
@@ -71,11 +73,11 @@ void drawAxes(Image * image) {
         Image::setPixel(image, 400,i, pi);
         Image::setPixel(image, i, 400, pi);
     }
-    int y = 400;
+   /* int y = 400;
     for (int j = 400; j >0; j--) {
        
         Image::setPixel(image, j, (800 - j) , pi);
-    }
+    }*/
 
 }
 /*************************READ*****************************/
@@ -124,6 +126,8 @@ std::vector< std::vector<float> > read(std::string Filename, std::string w ) {
 }
 
 
+
+
 /*************************Main *****************************/
 int main() {
 
@@ -147,7 +151,7 @@ int main() {
      }
      //image.sauver
      Image::sauver(I, "test.PPM");
-     std::vector<float> z;
+    
      std::vector< std::vector<float> > coord = read("diablo3_pose.obj", "v");
    
 
@@ -159,19 +163,23 @@ int main() {
      int i =0 ;
      for (auto point : coord)
      {  
-    
-             pt = point;
-             
-            
-        
+             pt = point;      
      }
      Pixel pi;
      pi.r = 0;
      pi.g = 0;
-     pi.b = 0;
-
-    
-     while(i< pt.size()-7) {
+     pi.g = 0;
+     while(i< pt.size()-9) {
+         Pixel pi;
+        // srand(time(0));
+         pi.r = rand() % 255;
+         if((pi.g = rand() % 255 + 10) == pi.r)
+             while((pi.g = rand() % 255 + 10) == pi.r)
+             pi.g = rand() % 255 + 10;
+         if ((pi.b = rand() % 255 + 10) == pi.g)
+             while ((pi.b = rand() % 255 + 10) == pi.g)
+                 pi.b = rand() % 255 + 10;
+   
          //draw  x y  
          p1.push_back(pt[i]);
          p1.push_back(pt[i + 1]);
@@ -180,43 +188,19 @@ int main() {
          p3.push_back(pt[i + 6]);
          p3.push_back(pt[i + 7]);
 
-         i= i+9;
+
+      
          triangle(p1, p2, p3, I, pi);
          p1.clear();
          p2.clear();
          p3.clear();
+        
+         i = i + 9;
+       
          
      }
-         //draw x z 
-        /* for (int j = 0; j < 3; j++) {
-             int c = i + 2;
-             p1.push_back(pt[i]);
-             p1.push_back(pt[c]);
-             p2.push_back(pt[i + 3]);
-             p2.push_back(pt[c]);
-             p3.push_back(pt[i + 6]);
-             p3.push_back(pt[c]);
-             // y z 
-            /* p1.push_back(pt[i+1]);
-             p1.push_back(pt[c]);
-             p2.push_back(pt[i + 4]);
-             p2.push_back(pt[c]);
-             p3.push_back(pt[i + 7]);
-             p3.push_back(pt[c]);
-             c = c + 3;
-             Pixel pz;
-             pz.r = 0;
-             pz.g = 0;
-             pz.b = 0;
-
-             triangle(p1, p2, p3, I, pz);
-             p1.clear();
-             p2.clear();
-             p3.clear();
-         }
-
-        
-     }*/
+          
+     
      drawAxes(I);
      //image.sauver
      Image::sauver(I, "test.PPM");
