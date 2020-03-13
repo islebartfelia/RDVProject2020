@@ -49,7 +49,7 @@ void Image::delImage(Image* I)
 void Image::setPixel(Image* I, int i, int j, Pixel p)
 {
     assert(I && i >= 0 && i < I->width && j >= 0 && j < I->height);
-    I->dat[i][j] = p;
+    I->dat[j][i] = p;
   
 }
 
