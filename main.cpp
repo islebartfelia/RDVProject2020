@@ -54,21 +54,7 @@ void line(int x0, int y0, int x1, int y1, Image * image, Pixel pixel) { //with B
 
 }
 
-std::vector<float>  barycentre(std::vector<float> p1, std::vector<float> p2, std::vector<float> p3 ,Image * image)
-{
-    int x ;
-    int y ;
-    Pixel pi;
-   pi.g=pi.b= pi.r = 0;
 
-    std::vector<float> p;
-    x = p1[0] + p2[0]+ p3[0];
-    y = p1[1] + p2[1] + p3[1];
-    p.push_back(x / 3);
-    p.push_back(y / 3);
-    Image::setPixel(image,p[0],p[1], pi);
-    return p;
-}
 /*************************TRIANGLE *****************************/
 
 void triangle(std::vector<float> p, std::vector<float> p1, std::vector<float> p2 , Image* image, Pixel pixel)
@@ -96,6 +82,25 @@ void drawAxes(Image * image) {
     }*/
 
 }
+
+
+/************************Barycenter***********************************/
+std::vector<float>  barycentre(std::vector<float> p1, std::vector<float> p2, std::vector<float> p3, Image* image)
+{
+    int x;
+    int y;
+    Pixel pi;
+    pi.g = pi.b = pi.r = 0;
+
+    std::vector<float> p;
+    x = p1[0] + p2[0] + p3[0];
+    y = p1[1] + p2[1] + p3[1];
+    p.push_back(x / 3);
+    p.push_back(y / 3);
+    Image::setPixel(image, p[0], p[1], pi);
+    return p;
+}
+
 /*************************READ*****************************/
 std::vector< std::vector<float> > read(std::string Filename, std::string w ) {
 
@@ -180,6 +185,7 @@ int main() {
      pi.r = 0;
      pi.g = 0;
      pi.g = 0;
+     /*
      while(i< pt.size()-9) {
          Pixel pi;
         // srand(time(0));
@@ -210,7 +216,20 @@ int main() {
      drawAxes(I);
      //image.sauver
      Image::sauver(I, "test.PPM");
- 
+ */
+     //test barycentre
+     p1.push_back(100);
+     p1.push_back(200);
+     p2.push_back(150);
+     p2.push_back(100);
+     p3.push_back(200);
+     p3.push_back(200);
+     triangle(p1, p2, p3, I, pi);
+     std::vector<float> p = barycentre(p1, p2, p3, I);
+     triangle(p, p2, p3, I, pi);
+     triangle(p, p1, p3, I, pi);
+     Image::sauver(I, "test.PPM");
+
     return 0;
 
 }
