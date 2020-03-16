@@ -62,7 +62,17 @@ void triangle(std::vector<float> p, std::vector<float> p1, std::vector<float> p2
     line(p[0], p[1], p1[0], p1[1],image, pixel);
     line(p1[0], p1[1], p2[0], p2[1],image, pixel);
     line(p2[0], p2[1], p[0], p[1], image, pixel);
+
+    std::vector<float> pt1;
+    std::vector<float> pt2;
+    std::vector<float> pt3;
+    //Remplissage 
+    
+   
 }
+
+
+/**********************Draw axe****************************/
 
 void drawAxes(Image * image) {
     Pixel pi;
@@ -176,6 +186,9 @@ int main() {
      std::vector<float> p1;
      std::vector<float> p2;
      std::vector<float> p3;
+     std::vector<float> pt1;
+     std::vector<float> pt2;
+     std::vector<float> pt3;
 
      int i =0 ;
      for (auto point : coord) 
@@ -185,19 +198,19 @@ int main() {
      pi.r = 0;
      pi.g = 0;
      pi.g = 0;
-     
+     /*
      //draw triangles
-     while(i< pt.size()-9) {
+     while (i < pt.size() - 9) {
          Pixel pi;
-        // srand(time(0));
+         // srand(time(0));
          pi.r = rand() % 255;
-         if((pi.g = rand() % 255 + 10) == pi.r)
-             while((pi.g = rand() % 255 + 10) == pi.r)
-             pi.g = rand() % 255 + 10;
+         if ((pi.g = rand() % 255 + 10) == pi.r)
+             while ((pi.g = rand() % 255 + 10) == pi.r)
+                 pi.g = rand() % 255 + 10;
          if ((pi.b = rand() % 255 + 10) == pi.g)
              while ((pi.b = rand() % 255 + 10) == pi.g)
                  pi.b = rand() % 255 + 10;
-   
+
          //draw  x y  
          p1.push_back(pt[i]);
          p1.push_back(pt[i + 1]);
@@ -210,18 +223,82 @@ int main() {
          std::vector<float> p = barycentre(p1, p2, p3, I);
          triangle(p, p2, p3, I, pi);
          triangle(p, p1, p3, I, pi);
+         int h = 0;
+         while (p1[0] != p[0] )
+         {
+             pt1.push_back(pt[i]);
+             pt1.push_back(pt[i + 1] /(p[1]);
+             pt2.push_back(pt[i + 3]);
+             pt2.push_back(pt[i + 4]);
+             pt3.push_back(pt[i + 6]);
+             pt3.push_back(pt[i + 7]);
+             triangle(p1/p, p2, p3, I, pi);
+
+         }
          p1.clear();
          p2.clear();
          p3.clear();
         
          i = i + 9;  
-     }
-           
+     }       
      
      drawAxes(I);
      //image.sauver
      Image::sauver(I, "test.PPM");
- 
+    */
+     p1.push_back(100);
+
+
+
+
+     p1.push_back(200);
+
+
+
+
+     p2.push_back(150);
+
+
+
+
+     p2.push_back(100);
+
+
+
+
+     p3.push_back(200);
+
+
+
+
+     p3.push_back(200);
+
+
+
+
+     triangle(p1, p2, p3, I, pi);
+
+
+
+
+     std::vector<float> p = barycentre(p1, p2, p3, I);
+
+
+
+
+     triangle(p, p2, p3, I, pi);
+     while (p3[0] != p[0]) {
+         p3[0] = p3[0] - 1;
+         triangle(p, p2, p3, I, pi);
+
+     }
+     while (p1[0] != p[0]) {
+         p1[0] = p1[0] +1;
+         triangle(p, p1, p2, I, pi);
+
+     }
+
+     Image::sauver(I, "test.PPM");
    
 
     return 0;
