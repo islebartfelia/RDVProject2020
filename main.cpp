@@ -13,7 +13,8 @@
 /*************************LINE *****************************/
 
 
-void line(int x0, int y0, int x1, int y1, Image * image, Pixel pixel) { //with Bresenham methode
+ void line(int x0, int y0, int x1, int y1, Image * image, Pixel pixel) { //with Bresenham methode
+  
     bool steep = false;
     if (std::abs(x0 - x1) < std::abs(y0 - y1)) {
        
@@ -31,6 +32,8 @@ void line(int x0, int y0, int x1, int y1, Image * image, Pixel pixel) { //with B
     int derror2 = std::abs(dy) * 2;
     int error2 = 0;
     int y = y0;
+   
+    
     for (int x = x0; x <= x1; x++) {
          
         if (steep) {
@@ -50,23 +53,25 @@ void line(int x0, int y0, int x1, int y1, Image * image, Pixel pixel) { //with B
        
     }
 
-   
+ 
 
 }
 
 
 /*************************TRIANGLE *****************************/
 
-void triangle(std::vector<float> p, std::vector<float> p1, std::vector<float> p2 , Image* image, Pixel pixel)
+void triangle(std::vector<float> p, std::vector<float> p1, std::vector<float> p2 , Image* image, Pixel pixel , std::vector<float> b)
 {
-    line(p[0], p[1], p1[0], p1[1],image, pixel);
-    line(p1[0], p1[1], p2[0], p2[1],image, pixel);
-    line(p2[0], p2[1], p[0], p[1], image, pixel);
+    
+      line(p[0], p[1], p1[0], p1[1],image, pixel);
+      line(p1[0], p1[1], p2[0], p2[1],image, pixel);
+     line(p2[0], p2[1], p[0], p[1], image, pixel);
+   
 
-    std::vector<float> pt1;
-    std::vector<float> pt2;
-    std::vector<float> pt3;
-    //Remplissage 
+
+   
+
+
     
    
 }
@@ -198,7 +203,7 @@ int main() {
      pi.r = 0;
      pi.g = 0;
      pi.g = 0;
-     /*
+     
      //draw triangles
      while (i < pt.size() - 9) {
          Pixel pi;
@@ -218,23 +223,26 @@ int main() {
          p2.push_back(pt[i + 4]);
          p3.push_back(pt[i + 6]);
          p3.push_back(pt[i + 7]);
-         triangle(p1, p2, p3, I, pi);
          //draw barycenter
          std::vector<float> p = barycentre(p1, p2, p3, I);
-         triangle(p, p2, p3, I, pi);
-         triangle(p, p1, p3, I, pi);
-         int h = 0;
-         while (p1[0] != p[0] )
-         {
-             pt1.push_back(pt[i]);
-             pt1.push_back(pt[i + 1] /(p[1]);
-             pt2.push_back(pt[i + 3]);
-             pt2.push_back(pt[i + 4]);
-             pt3.push_back(pt[i + 6]);
-             pt3.push_back(pt[i + 7]);
-             triangle(p1/p, p2, p3, I, pi);
+         std::vector<float> intersection;
+         triangle(p1, p2, p3, I, pi ,p); 
+         triangle(p, p2, p3, I, pi, p);
+         triangle(p, p1, p3, I, pi, p);
+         pt1.push_back((p2[0]+ p3[0]) /2 ); //intersection cord x 
+         pt1.push_back((p2[1] + p3[1]) / 2);
 
-         }
+        /* int i = 0;
+         if (p[0] < pt1[0]) {
+             while(p[0] < pt1[0] )
+             p[0] = p[0]++;
+             triangle(p, p2, p3, I, pi, p);
+         }*/
+         triangle(p, p1, p3, I, pi ,p);
+      
+         
+        
+        
          p1.clear();
          p2.clear();
          p3.clear();
@@ -244,61 +252,8 @@ int main() {
      
      drawAxes(I);
      //image.sauver
-     Image::sauver(I, "test.PPM");
-    */
-     p1.push_back(100);
-
-
-
-
-     p1.push_back(200);
-
-
-
-
-     p2.push_back(150);
-
-
-
-
-     p2.push_back(100);
-
-
-
-
-     p3.push_back(200);
-
-
-
-
-     p3.push_back(200);
-
-
-
-
-     triangle(p1, p2, p3, I, pi);
-
-
-
-
-     std::vector<float> p = barycentre(p1, p2, p3, I);
-
-
-
-
-     triangle(p, p2, p3, I, pi);
-     while (p3[0] != p[0]) {
-         p3[0] = p3[0] - 1;
-         triangle(p, p2, p3, I, pi);
-
-     }
-     while (p1[0] != p[0]) {
-         p1[0] = p1[0] +1;
-         triangle(p, p1, p2, I, pi);
-
-     }
-
-     Image::sauver(I, "test.PPM");
+     Image::sauver(I, "coloriage.PPM");
+    
    
 
     return 0;
