@@ -122,14 +122,14 @@ std::vector< std::vector<float> > read(std::string Filename, std::string w ) {
 
 
 
-                p.push_back(((atof(line.c_str())) * (100)) + 400); //x 
+                p.push_back(((atof(line.c_str())) * (200)) + 400); //x 
                 file >> line;
 
 
-                p.push_back(((atof(line.c_str()) * (100)) + 400));//y
+                p.push_back(((atof(line.c_str()) * (200)) + 400));//y
 
                 file >> line;
-                p.push_back((atof(line.c_str()) * (100)) + 400);//z
+                p.push_back((atof(line.c_str()) * (200)) + 400);//z
                 file >> line;
                 
                 coord.push_back(p);
@@ -185,7 +185,8 @@ int main() {
      pi.r = 0;
      pi.g = 0;
      pi.g = 0;
-     /*
+     
+     //draw triangles
      while(i< pt.size()-9) {
          Pixel pi;
         // srand(time(0));
@@ -205,6 +206,10 @@ int main() {
          p3.push_back(pt[i + 6]);
          p3.push_back(pt[i + 7]);
          triangle(p1, p2, p3, I, pi);
+         //draw barycenter
+         std::vector<float> p = barycentre(p1, p2, p3, I);
+         triangle(p, p2, p3, I, pi);
+         triangle(p, p1, p3, I, pi);
          p1.clear();
          p2.clear();
          p3.clear();
@@ -216,19 +221,8 @@ int main() {
      drawAxes(I);
      //image.sauver
      Image::sauver(I, "test.PPM");
- */
-     //test barycentre
-     p1.push_back(100);
-     p1.push_back(200);
-     p2.push_back(150);
-     p2.push_back(100);
-     p3.push_back(200);
-     p3.push_back(200);
-     triangle(p1, p2, p3, I, pi);
-     std::vector<float> p = barycentre(p1, p2, p3, I);
-     triangle(p, p2, p3, I, pi);
-     triangle(p, p1, p3, I, pi);
-     Image::sauver(I, "test.PPM");
+ 
+   
 
     return 0;
 
