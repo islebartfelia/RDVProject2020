@@ -53,6 +53,22 @@ void line(int x0, int y0, int x1, int y1, Image * image, Pixel pixel) { //with B
    
 
 }
+
+std::vector<float>  barycentre(std::vector<float> p1, std::vector<float> p2, std::vector<float> p3 ,Image * image)
+{
+    int x ;
+    int y ;
+    Pixel pi;
+   pi.g=pi.b= pi.r = 0;
+
+    std::vector<float> p;
+    x = p1[0] + p2[0]+ p3[0];
+    y = p1[1] + p2[1] + p3[1];
+    p.push_back(x / 3);
+    p.push_back(y / 3);
+    Image::setPixel(image,p[0],p[1], pi);
+    return p;
+}
 /*************************TRIANGLE *****************************/
 
 void triangle(std::vector<float> p, std::vector<float> p1, std::vector<float> p2 , Image* image, Pixel pixel)
@@ -134,8 +150,6 @@ int main() {
     int width = 800; int height = 800;
 
     /* Impression de l'image dans le fichier .ppm*/
-
-
      Image* I = Image::nouvelleImage(width, height);
      for (width = 0; width < 800; width++)
      {
@@ -150,21 +164,18 @@ int main() {
          }
      }
      //image.sauver
-     Image::sauver(I, "test.PPM");
-    
-     std::vector< std::vector<float> > coord = read("diablo3_pose.obj", "v");
-   
+     Image::sauver(I, "test.PPM");  
 
+     std::vector< std::vector<float> > coord = read("diablo3_pose.obj", "v");
      std::vector<float> pt;
      std::vector<float> p1;
      std::vector<float> p2;
      std::vector<float> p3;
 
      int i =0 ;
-     for (auto point : coord)
-     {  
+     for (auto point : coord) 
              pt = point;      
-     }
+     
      Pixel pi;
      pi.r = 0;
      pi.g = 0;
@@ -187,19 +198,14 @@ int main() {
          p2.push_back(pt[i + 4]);
          p3.push_back(pt[i + 6]);
          p3.push_back(pt[i + 7]);
-
-
-      
          triangle(p1, p2, p3, I, pi);
          p1.clear();
          p2.clear();
          p3.clear();
         
-         i = i + 9;
-       
-         
+         i = i + 9;  
      }
-          
+           
      
      drawAxes(I);
      //image.sauver
